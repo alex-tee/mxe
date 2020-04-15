@@ -1,12 +1,11 @@
---- a/source/plugin/Makefile
-+++ b/source/plugin/Makefile
-@@ -467,7 +467,8 @@
+--- b/source/plugin/Makefile	2020-04-15 21:17:18.000000000 +0000
++++ a/source/plugin/Makefile	2020-04-15 22:29:46.898740576 +0000
+@@ -467,7 +467,7 @@
  ifeq ($(NEEDS_WINE),true)
-        @cd $(BINDIR) && wine ./carla-lv2-export$(APP_EXT)
+ 	@cd $(BINDIR) && wine ./carla-lv2-export$(APP_EXT)
  else
--       @cd $(BINDIR) && ./carla-lv2-export$(APP_EXT)
-+       #@cd $(BINDIR) && ./carla-lv2-export$(APP_EXT)
-+       touch $@
+-	@cd $(BINDIR) && ./carla-lv2-export$(APP_EXT)
++	touch $@
  endif
-        @cd $(BINDIR)/carla.lv2 && ln -sf ../*bridge-* ../carla-discovery-* .
+ 	@cd $(BINDIR)/carla.lv2 && ln -sf ../*bridge-* ../carla-discovery-* .
 
