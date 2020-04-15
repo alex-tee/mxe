@@ -7,8 +7,6 @@ $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := a20036e
 $(PKG)_CHECKSUM := e34c9f1320fdf31eb5c31cd61420d945663f42208286abb0ce8597fb5b0c8dd1
 $(PKG)_GH_CONF  := falkTX/Carla/branches/develop
-$(PKG)_FILE     := Carla-$($(PKG)_VERSION).zip
-$(PKG)_URL      := https://github.com/falkTX/Carla/archive/$($(PKG)_VERSION).zip
 $(PKG)_DEPS     := cc libsndfile
 
 define $(PKG)_BUILD
