@@ -32,6 +32,7 @@ packages:
   - unzip
   - wget
   - xz-utils
+  - rsync
 sources:
   - https://git.sr.ht/~alextee/mxe
 secrets:
