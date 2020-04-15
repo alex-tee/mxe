@@ -34,7 +34,21 @@ packages:
   - xz-utils
 sources:
   - https://git.sr.ht/~alextee/mxe
+secrets:
+  - 063cb70d-6da6-492a-b530-04edc07651ba
 tasks:
   - build: |
       cd mxe
       make MXE_TARGETS='x86_64-w64-mingw32.static' JOBS=5 -j5 carla
+  - deploy: |
+      cd mxe
+      prefix="usr/x86_64-w64-mingw32.static"
+      tmpdir=carla-tmp
+      mkdir -p $tmpdir/include
+      mkdir -p $tmpdir/lib/pkgconfig
+      cp -R $prefix/include/carla $tmpdir/include/
+      cp -R $prefix/lib/carla $tmpdir/lib/
+      cp $prefix/lib/pkgconfig/carla* $tmpdir/lib/pkgconfig/
+      zip carla.zip -r $tmpdir
+      sshopts="ssh -o StrictHostKeyChecking=no"
+      rsync --rsh="$sshopts" -rP carla.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/
