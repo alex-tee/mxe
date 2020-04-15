@@ -49,6 +49,7 @@ tasks:
       cp -R $prefix/include/carla $tmpdir/include/
       cp -R $prefix/lib/carla $tmpdir/lib/
       cp $prefix/lib/pkgconfig/carla* $tmpdir/lib/pkgconfig/
+      cat src/carla.mk > $tmpdir/version.txt
       zip carla.zip -r $tmpdir
       sshopts="ssh -o StrictHostKeyChecking=no"
       rsync --rsh="$sshopts" -rP carla.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/
