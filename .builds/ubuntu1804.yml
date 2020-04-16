@@ -53,6 +53,16 @@ tasks:
       cp src/carla.mk $tmpdir/version.txt
       carla_commit=$(grep -oE "VERSION  := (.*)$" src/carla.mk | cut -c 13-)
       cd $tmpdir
+      current_prefix=/home/build/mxe/usr/x86_64-w64-mingw32.static
+      sed -i -e "s|prefix=$current_prefix|prefix=/mingw64|" lib/pkgconfig/carla-native-plugin.pc
+      sed -i -e "s|libdir=$current_prefix|libdir=\${prefix}|" lib/pkgconfig/carla-native-plugin.pc
+      sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-native-plugin.pc
+      sed -i -e "s|prefix=$current_prefix|prefix=/mingw64|" lib/pkgconfig/carla-standalone.pc
+      sed -i -e "s|libdir=$current_prefix|libdir=\${prefix}|" lib/pkgconfig/carla-standalone.pc
+      sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-standalonein.pc
+      sed -i -e "s|prefix=$current_prefix|prefix=/mingw64|" lib/pkgconfig/carla-utils.pc
+      sed -i -e "s|libdir=$current_prefix|libdir=\${prefix}|" lib/pkgconfig/carla-utils.pc
+      sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-utils.pc
       zip carla-$carla_commit.zip -r ./*
       sshopts="ssh -o StrictHostKeyChecking=no"
       rsync --rsh="$sshopts" -rP carla-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
