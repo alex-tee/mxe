@@ -54,4 +54,4 @@ tasks:
       cd $tmpdir
       zip carla.zip -r ./*
       sshopts="ssh -o StrictHostKeyChecking=no"
-      rsync --rsh="$sshopts" -rP carla.zip srht@mail.zrythm.org:~/
+      rsync --rsh="$sshopts" -rP carla.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
