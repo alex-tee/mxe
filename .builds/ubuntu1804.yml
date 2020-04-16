@@ -40,11 +40,14 @@ secrets:
 tasks:
   - build: |
       cd mxe
-      make MXE_TARGETS='x86_64-w64-mingw32.static' JOBS=5 -j5 carla
+      make MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' JOBS=5 -j5 carla
   - deploy: |
       cd mxe
-      prefix="usr/x86_64-w64-mingw32.static"
+      # set common vars
       tmpdir=carla-tmp
+      sshopts="ssh -o StrictHostKeyChecking=no"
+      # do 64bit
+      prefix="usr/x86_64-w64-mingw32.static"
       mkdir -p $tmpdir/include
       mkdir -p $tmpdir/lib/pkgconfig
       cp -R $prefix/include/carla $tmpdir/include/
@@ -53,16 +56,30 @@ tasks:
       cp src/carla.mk $tmpdir/version.txt
       carla_commit=$(grep -oE "VERSION  := (.*)$" src/carla.mk | cut -c 13-)
       cd $tmpdir
-      current_prefix=/home/build/mxe/usr/x86_64-w64-mingw32.static
+      current_prefix=/home/build/mxe/$prefix
       sed -i -e "s|prefix=$current_prefix|prefix=/mingw64|" lib/pkgconfig/carla-native-plugin.pc
       sed -i -e "s|libdir=$current_prefix|libdir=\${prefix}|" lib/pkgconfig/carla-native-plugin.pc
       sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-native-plugin.pc
       sed -i -e "s|prefix=$current_prefix|prefix=/mingw64|" lib/pkgconfig/carla-standalone.pc
       sed -i -e "s|libdir=$current_prefix|libdir=\${prefix}|" lib/pkgconfig/carla-standalone.pc
-      sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-standalonein.pc
+      sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-standalone.pc
       sed -i -e "s|prefix=$current_prefix|prefix=/mingw64|" lib/pkgconfig/carla-utils.pc
       sed -i -e "s|libdir=$current_prefix|libdir=\${prefix}|" lib/pkgconfig/carla-utils.pc
       sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-utils.pc
-      zip carla-$carla_commit.zip -r ./*
-      sshopts="ssh -o StrictHostKeyChecking=no"
-      rsync --rsh="$sshopts" -rP carla-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
+      zip carla-64-$carla_commit.zip -r ./*
+      rsync --rsh="$sshopts" -rP carla-64-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
+      # cleanup
+      cd ..
+      rm -rf tmpdir
+      # do 32bit
+      prefix="usr/i686-w64-mingw32.static"
+      mkdir -p $tmpdir/include
+      mkdir -p $tmpdir/lib/pkgconfig
+      cp -R $prefix/include/carla $tmpdir/include/
+      cp -R $prefix/lib/carla $tmpdir/lib/
+      cp $prefix/lib/pkgconfig/carla* $tmpdir/lib/pkgconfig/
+      cp src/carla.mk $tmpdir/version.txt
+      carla_commit=$(grep -oE "VERSION  := (.*)$" src/carla.mk | cut -c 13-)
+      cd $tmpdir
+      zip carla-32-$carla_commit.zip -r ./*
+      rsync --rsh="$sshopts" -rP carla-32-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
