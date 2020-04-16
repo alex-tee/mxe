@@ -51,7 +51,8 @@ tasks:
       cp -R $prefix/lib/carla $tmpdir/lib/
       cp $prefix/lib/pkgconfig/carla* $tmpdir/lib/pkgconfig/
       cp src/carla.mk $tmpdir/version.txt
+      carla_commit=$(grep -oE "VERSION  := (.*)$" src/carla.mk | cut -c 13-)
       cd $tmpdir
-      zip carla.zip -r ./*
+      zip carla-$carla_commit.zip -r ./*
       sshopts="ssh -o StrictHostKeyChecking=no"
-      rsync --rsh="$sshopts" -rP carla.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
+      rsync --rsh="$sshopts" -rP carla-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
