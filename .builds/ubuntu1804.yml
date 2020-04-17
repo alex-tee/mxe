@@ -38,10 +38,10 @@ sources:
 secrets:
   - 063cb70d-6da6-492a-b530-04edc07651ba
 tasks:
-  - build: |
+  - build_64: |
       cd mxe
-      make MXE_TARGETS='x86_64-w64-mingw32.static i686-w64-mingw32.static' JOBS=5 -j5 carla
-  - deploy: |
+      make MXE_TARGETS='x86_64-w64-mingw32.static' JOBS=5 -j5 carla
+  - deploy_64: |
       cd mxe
       # set common vars
       tmpdir=carla-tmp
@@ -68,9 +68,14 @@ tasks:
       sed -i -e "s|includedir=$current_prefix|includedir=\${prefix}|" lib/pkgconfig/carla-utils.pc
       zip carla-64-$carla_commit.zip -r ./*
       rsync --rsh="$sshopts" -rP carla-64-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
-      # cleanup
-      cd ..
-      rm -rf tmpdir
+  - build_32: |
+      cd mxe
+      make MXE_TARGETS='i686-w64-mingw32.static' JOBS=5 -j5 carla
+  - deploy_32: |
+      cd mxe
+      # set common vars
+      tmpdir=carla-tmp
+      sshopts="ssh -o StrictHostKeyChecking=no"
       # do 32bit
       prefix="usr/i686-w64-mingw32.static"
       mkdir -p $tmpdir/include
