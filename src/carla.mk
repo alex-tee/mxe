@@ -4,8 +4,8 @@ PKG             := carla
 $(PKG)_WEBSITE  := https://github.com/falkTX/Carla
 $(PKG)_DESCR    := Carla
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := b5ee661
-$(PKG)_CHECKSUM := beb54e71b368d282ee61ec7112cb47fa4f6ae331553aec61cc120b1482528f07
+$(PKG)_VERSION  := b082b8b
+$(PKG)_CHECKSUM := 057e9572ba2867a4eaddc44859a083b1ae9ea4440426fcbc753aa10d0ead7b99
 $(PKG)_GH_CONF  := falkTX/Carla/branches/develop
 $(PKG)_DEPS     := cc libsndfile
 
