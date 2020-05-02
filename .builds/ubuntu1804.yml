@@ -34,7 +34,7 @@ packages:
   - xz-utils
   - rsync
 sources:
-  - https://git.sr.ht/~alextee/mxe
+  - https://git.zrythm.org/git/mxe
 secrets:
   - 063cb70d-6da6-492a-b530-04edc07651ba
 tasks:
