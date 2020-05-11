@@ -4,8 +4,8 @@ PKG             := carla
 $(PKG)_WEBSITE  := https://github.com/falkTX/Carla
 $(PKG)_DESCR    := Carla
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := b082b8b
-$(PKG)_CHECKSUM := 057e9572ba2867a4eaddc44859a083b1ae9ea4440426fcbc753aa10d0ead7b99
+$(PKG)_VERSION  := c8b2c61
+$(PKG)_CHECKSUM := 3800dc5efbe60103e48f19c096a4227518df2abf647b35d3bba667a4fa3ad4fd
 $(PKG)_GH_CONF  := falkTX/Carla/branches/develop
 $(PKG)_DEPS     := cc libsndfile fluidsynth
 
