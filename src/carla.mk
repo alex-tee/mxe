@@ -11,10 +11,10 @@ $(PKG)_DEPS     := cc libsndfile fluidsynth
 
 define $(PKG)_BUILD
 	cd '$(SOURCE_DIR)' && $(MAKE) -j '$(JOBS)' \
-		CC=$(TARGET)-gcc CXX=$(TARGET)-g++ \
-		PKG_CONFIG=$(TARGET)-pkg-config BUILDING_FOR_WINDOWS=true
+		CC=$(subst shared,static,$(TARGET))-gcc CXX=$(subst shared,static,$(TARGET))-g++ \
+		PKG_CONFIG=$(subst shared,static,$(TARGET))-pkg-config BUILDING_FOR_WINDOWS=true
 	cd '$(SOURCE_DIR)' && $(MAKE) -j 1 \
-		CC=$(TARGET)-gcc CXX=$(TARGET)-g++ \
-		PKG_CONFIG=$(TARGET)-pkg-config BUILDING_FOR_WINDOWS=true \
+		CC=$(subst shared,static,$(TARGET))-gcc CXX=$(subst shared,static,$(TARGET))-g++ \
+		PKG_CONFIG=$(subst shared,static,$(TARGET))-pkg-config BUILDING_FOR_WINDOWS=true \
 		PREFIX=$(PREFIX)/$(TARGET) install
 endef
