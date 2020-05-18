@@ -1,6 +1,6 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
-PKG             := zrythm
+PKG             := zrythm-trial
 $(PKG)_WEBSITE  := https://github.com/zrythm/zrythm
 $(PKG)_DESCR    := zrythm
 $(PKG)_IGNORE   :=
@@ -16,7 +16,8 @@ define $(PKG)_BUILD
 		-Dwith-manpage=false \
 		-Drtmidi=auto \
 		-Drtaudio=auto \
-		-Dcarla=enabled
+		-Dcarla=enabled \
+		-Dtrial-ver=true
 	cd $(SOURCE_DIR) && \
 		$(SED) -i -e '45s|#|//#|' subprojects/lilv/lilv-0.24.6/src/util.c && \
 		$(SED) -i -e '55s|#|//#|' subprojects/lilv/lilv-0.24.6/src/util.c
