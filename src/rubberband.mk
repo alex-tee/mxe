@@ -26,12 +26,13 @@ define $(PKG)_BUILD
         DYNAMIC_FULL_VERSION= \
         DYNAMIC_ABI_VERSION= \
         lib \
-        $(if $(BUILD_STATIC),static,dynamic vamp)
+        $(if $(BUILD_STATIC),static,static dynamic vamp)
 
     $(INSTALL) -d '$(PREFIX)/$(TARGET)/include/$(PKG)'
     $(INSTALL) -d '$(PREFIX)/$(TARGET)/lib/vamp'
     $(INSTALL) -m644 '$(1)/$(PKG)/'*.h '$(PREFIX)/$(TARGET)/include/$(PKG)'
     $(INSTALL) -m644 '$(1)/lib/'*.$(LIB_SUFFIX) '$(PREFIX)/$(TARGET)/$(if $(BUILD_STATIC),lib,bin)'
+    $(INSTALL) -m644 '$(1)/lib/'*.a '$(PREFIX)/$(TARGET)/lib'
     $(INSTALL) -m644 '$(1)/vamp/vamp-rubberband.cat' '$(PREFIX)/$(TARGET)/lib/vamp'
     $(SED) 's,%PREFIX%,$(PREFIX)/$(TARGET),' '$(1)/$(PKG).pc.in' \
         > '$(PREFIX)/$(TARGET)/lib/pkgconfig/$(PKG).pc'
