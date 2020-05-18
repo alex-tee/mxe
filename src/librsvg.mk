@@ -17,12 +17,13 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(1)' && ./configure \
-        $(MXE_CONFIGURE_OPTS) \
-        --disable-pixbuf-loader \
-        --disable-gtk-doc \
-        --enable-introspection=no
-    $(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
+	cd '$(1)' && ./configure \
+		$(MXE_CONFIGURE_OPTS) \
+		--disable-gtk-doc \
+		--enable-pixbuf-loader \
+		--enable-introspection=no
+	GDK_PIXBUF_QUERYLOADERS=$(PREFIX)/$(TARGET)/bin/gdk-pixbuf-query-loaders.exe \
+		$(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
 
     '$(TARGET)-gcc' \
         -mwindows -W -Wall -Werror -Wno-error=deprecated-declarations \
