@@ -4,8 +4,8 @@ PKG             := zrythm
 $(PKG)_WEBSITE  := https://github.com/zrythm/zrythm
 $(PKG)_DESCR    := zrythm
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := e639b70
-$(PKG)_CHECKSUM := 5f20061562d23611639f1fb50160994d04ad65f65f240107c250f00a676030ad
+$(PKG)_VERSION  := c9b1f16
+$(PKG)_CHECKSUM := 35d6620c533db0e60d173d3b945066e95acd9aef8703efd2d6f695ec3479b3c4
 $(PKG)_GH_CONF  := zrythm/zrythm/branches/master
 $(PKG)_DEPS     := cc libsndfile fftw gtk3 libyaml gtksourceview4 rubberband dlfcn-win32 carla librsvg
 
