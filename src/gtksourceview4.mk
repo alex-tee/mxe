@@ -12,16 +12,15 @@ $(PKG)_URL      := https://download.gnome.org/sources/gtksourceview/$(call SHORT
 $(PKG)_DEPS     := cc gtk3 libxml2
 
 define $(PKG)_BUILD
-    cd '$(1)' && ./configure \
-        --host='$(TARGET)' \
-        --disable-shared \
-        --prefix='$(PREFIX)/$(TARGET)' \
-        --disable-gtk-doc \
-        GLIB_GENMARSHAL='$(PREFIX)/$(TARGET)/bin/glib-genmarshal' \
-        GLIB_MKENUMS='$(PREFIX)/$(TARGET)/bin/glib-mkenums' \
-        $(shell [ `uname -s` == Darwin ] && echo "INTLTOOL_PERL=/usr/bin/perl")
-    $(MAKE) -C '$(1)' -j '$(JOBS)' bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
-    $(MAKE) -C '$(1)' -j 1 install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
+	$(SED) -i -e 's/DllMain/$(if $(BUILD_STATIC),C,D)llMain/g' $(1)/gtksourceview/gtksourceinit.c
+	cd '$(1)' && ./configure \
+		--host='$(TARGET)' \
+		$(if $(BUILD_STATIC),--disable-shared,--enable-shared) \
+		--prefix='$(PREFIX)/$(TARGET)' \
+		--disable-gtk-doc \
+		GLIB_GENMARSHAL='$(PREFIX)/$(TARGET)/bin/glib-genmarshal' \
+		GLIB_MKENUMS='$(PREFIX)/$(TARGET)/bin/glib-mkenums' \
+		$(shell [ `uname -s` == Darwin ] && echo "INTLTOOL_PERL=/usr/bin/perl")
+		$(MAKE) -C '$(1)' -j '$(JOBS)' bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
+		$(MAKE) -C '$(1)' -j 1 install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
 endef
-
-$(PKG)_BUILD_SHARED =
