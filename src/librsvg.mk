@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := d14d7b3e25023ce34302022fd7c9b3a468629c94dff6c177874629686bfc7
 $(PKG)_SUBDIR   := librsvg-$($(PKG)_VERSION)
 $(PKG)_FILE     := librsvg-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.gnome.org/sources/librsvg/$(call SHORT_PKG_VERSION,$(PKG))/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc cairo gdk-pixbuf glib libcroco libgsf pango
+$(PKG)_DEPS     := cc glib2 cairo gdk-pixbuf libcroco libgsf pango
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://gitlab.gnome.org/GNOME/librsvg/tags' | \
@@ -17,11 +17,14 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-	cd '$(1)' && LDFLAGS+='-lgdiplus -lgdi32' ./configure \
+	cd '$(1)' && \
+		LDFLAGS+='-lgdiplus -lgdi32' \
+		./configure \
 		$(MXE_CONFIGURE_OPTS) \
 		--disable-gtk-doc \
 		--enable-pixbuf-loader \
 		--enable-introspection=no
+	cd $(1) && $(SED) -i -e "s/-lgdi32/-lgdi32 -lgdiplus/g" Makefile
 	GDK_PIXBUF_QUERYLOADERS=$(PREFIX)/$(TARGET)/bin/gdk-pixbuf-query-loaders.exe \
 		$(MAKE) -C '$(1)' -j '$(JOBS)' install bin_PROGRAMS= sbin_PROGRAMS= noinst_PROGRAMS=
 

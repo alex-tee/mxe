@@ -10,6 +10,9 @@ $(PKG)_GH_CONF  := falkTX/Carla/branches/develop
 $(PKG)_DEPS     := cc libsndfile fluidsynth
 
 define $(PKG)_BUILD
+	cd '$(SOURCE_DIR)' && \
+		$(SED) -i -e "s|NATIVE_LINK_FLAGS) -o|NATIVE_LINK_FLAGS) -L$(PREFIX)/x86_64-w64-mingw32.shared/lib -lintl -liconv -o|g" source/plugin/Makefile source/bridges-plugin/Makefile && \
+		$(SED) -i -e "s|\t@|\t|g" source/bridges-plugin/Makefile source/plugin/Makefile
 	cd '$(SOURCE_DIR)' && $(MAKE) -j '$(JOBS)' \
 		CC=$(subst shared,static,$(TARGET))-gcc CXX=$(subst shared,static,$(TARGET))-g++ \
 		PKG_CONFIG=$(subst shared,static,$(TARGET))-pkg-config BUILDING_FOR_WINDOWS=true

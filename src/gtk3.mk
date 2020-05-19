@@ -4,12 +4,12 @@ PKG             := gtk3
 $(PKG)_WEBSITE  := https://gtk.org/
 $(PKG)_DESCR    := GTK+
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 3.22.7
-$(PKG)_CHECKSUM := a3a27564bfb1679ebbc75c37cd2bcd6e727c8bdfbcd3984d29305bf9ee60d432
+$(PKG)_VERSION  := 3.24.18
+$(PKG)_CHECKSUM := f5eaff7f4602e44a9ca7bfad5382d7a73e509a8f00b0bcab91c198d096172ad2
 $(PKG)_SUBDIR   := gtk+-$($(PKG)_VERSION)
 $(PKG)_FILE     := gtk+-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.gnome.org/sources/gtk+/$(call SHORT_PKG_VERSION,$(PKG))/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc atk cairo gdk-pixbuf-rsvg gettext glib jasper jpeg libepoxy libpng pango tiff
+$(PKG)_DEPS     := cc atk cairo gdk-pixbuf-rsvg gettext-bin glib2 jasper jpeg libepoxy libpng pango tiff gtk3-utils-bin
 
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'https://gitlab.gnome.org/GNOME/gtk+/tags' | \
@@ -20,24 +20,29 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-    cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
-        $(MXE_CONFIGURE_OPTS) \
-        --disable-glibtest \
-        --disable-cups \
-        --disable-test-print-backend \
-        --disable-gtk-doc \
-        --disable-man \
-        --with-included-immodules \
-        --enable-win32-backend
-    $(MAKE) -C '$(BUILD_DIR)' -j '$(JOBS)' $(MXE_DISABLE_CRUFT) EXTRA_DIST=
-    $(MAKE) -C '$(BUILD_DIR)' -j 1 install $(MXE_DISABLE_CRUFT) EXTRA_DIST=
-
-    # cleanup to avoid gtk2/3 conflicts (EXTRA_DIST doesn't exclude it)
-    # and *.def files aren't really relevant for MXE
-    rm -f '$(PREFIX)/$(TARGET)/lib/gailutil.def'
-
-    '$(TARGET)-gcc' \
-        -W -Wall -Werror -ansi \
-        '$(TEST_FILE)' -o '$(PREFIX)/$(TARGET)/bin/test-gtk3.exe' \
-        `'$(TARGET)-pkg-config' gtk+-3.0 --cflags --libs` -lgdiplus
+	cd '$(SOURCE_DIR)' && \
+		cp -R /home/ansible/Documents/non-git/gtk+-$($(PKG)_VERSION)/subprojects/* ./subprojects/ && \
+		$(SED) -i -e "s/'-lgdi32',/'-lgdi32', '-lgdiplus',/" meson.build && \
+		$(SED) -i -e "1042s/.*/if false/" gtk/meson.build && \
+		$(SED) -i -e "1090s/true/true)/" gtk/meson.build && \
+		$(SED) -i -e "1091s/)/endif/" gtk/meson.build && \
+		$(SED) -i -e \
+		"s/DllMain/$(if $(BUILD_STATIC),gtk_DllMain,DllMain)/g" \
+		gtk/gtkwin32.c && \
+		$(SED) -i -e \
+		"s/DllMain/$(if $(BUILD_STATIC),gdk_DllMain,DllMain)/g" \
+		gdk/win32/gdkmain-win32.c
+	cd '$(SOURCE_DIR)' && $(TARGET)-meson '$(BUILD_DIR)' \
+		-Dman=false \
+		-Dbroadway_backend=false \
+		-Dwin32_enabled=true \
+		-Dgtk_doc=false \
+		-Dman=false \
+		-Dtests=false \
+		-Dinstalled_tests=false \
+		-Dexamples=false \
+		-Ddemos=false \
+		-Dintrospection=false \
+		-Dbuiltin_modules=true
+	cd '$(SOURCE_DIR)' && ninja -C $(BUILD_DIR) install
 endef

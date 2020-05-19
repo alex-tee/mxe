@@ -107,7 +107,7 @@ local BLACKLIST = {
 
     -- usr/lib/nonetwork.so and
     -- usr/x86_64-unknown-linux-gnu/lib/nonetwork.so
-    'lib/nonetwork.so',
+    --'lib/nonetwork.so',
 
     -- https://github.com/mxe/mxe/issues/1886#issuecomment-331719282
     'installed/.gitkeep',
@@ -1117,7 +1117,7 @@ local function main()
             MXE_DIR, MXE_DIR_EXPECTED)
     end
     gitInit()
-    assert(execute(("%s check-requirements nonet-lib print-git-oneline MXE_TARGETS=%q"):format(
+    assert(execute(("%s check-requirements print-git-oneline MXE_TARGETS=%q"):format(
         tool 'make', table.concat(TARGETS, ' '))))
     if not max_items then
         downloadPackages()

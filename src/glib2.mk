@@ -1,16 +1,16 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
-PKG             := glib
+PKG             := glib2
 $(PKG)_WEBSITE  := https://gtk.org/
-$(PKG)_DESCR    := GLib
+$(PKG)_DESCR    := GLib updated ver
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 2.50.2
-$(PKG)_CHECKSUM := be68737c1f268c05493e503b3b654d2b7f43d7d0b8c5556f7e4651b870acfbf5
+$(PKG)_VERSION  := 2.64.2
+$(PKG)_CHECKSUM := 9a2f21ed8f13b9303399de13a0252b7cbcede593d26971378ec6cb90e87f2277
 $(PKG)_SUBDIR   := glib-$($(PKG)_VERSION)
 $(PKG)_FILE     := glib-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.gnome.org/sources/glib/$(call SHORT_PKG_VERSION,$(PKG))/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc dbus gettext libffi libiconv pcre zlib $(BUILD)~$(PKG)
-$(PKG)_TARGETS  := $(BUILD) $(MXE_TARGETS)
+$(PKG)_DEPS     := cc dbus gettext-bin libffi libiconv pcre zlib $(BUILD)~$(PKG)
+$(PKG)_TARGETS  := $(MXE_TARGETS) $(BUILD)
 
 $(PKG)_DEPS_$(BUILD) := autotools gettext libffi libiconv zlib
 
@@ -52,33 +52,15 @@ endef
 
 define $(PKG)_BUILD_NATIVE
     # native build for glib-tools
-    cd '$(SOURCE_DIR)' && NOCONFIGURE=true ./autogen.sh
-    cd '$(BUILD_DIR)' && '$(SOURCE_DIR)/configure' \
-        $(MXE_CONFIGURE_OPTS) \
-        --enable-regex \
-        --disable-threads \
-        --disable-selinux \
-        --disable-inotify \
-        --disable-fam \
-        --disable-xattr \
-        --disable-dtrace \
-        --disable-libmount \
-        --with-libiconv=gnu \
-        --with-pcre=internal \
-        PKG_CONFIG='$(PREFIX)/$(TARGET)/bin/pkgconf' \
-        CPPFLAGS='-I$(PREFIX)/$(TARGET)/include' \
-        LDFLAGS='-L$(PREFIX)/$(TARGET)/lib'
-    $(SED) -i 's,#define G_ATOMIC.*,,' '$(BUILD_DIR)/config.h'
-    $(MAKE) -C '$(BUILD_DIR)/glib'    -j '$(JOBS)'
-    $(MAKE) -C '$(BUILD_DIR)/gthread' -j '$(JOBS)'
-    $(MAKE) -C '$(BUILD_DIR)/gmodule' -j '$(JOBS)'
-    $(MAKE) -C '$(BUILD_DIR)/gobject' -j '$(JOBS)' lib_LTLIBRARIES= install-exec
-    $(MAKE) -C '$(BUILD_DIR)/gio/xdgmime'     -j '$(JOBS)'
-    $(MAKE) -C '$(BUILD_DIR)/gio'     -j '$(JOBS)' glib-compile-schemas
-    $(MAKE) -C '$(BUILD_DIR)/gio'     -j '$(JOBS)' glib-compile-resources
+	cd '$(SOURCE_DIR)' && meson '$(BUILD_DIR)' \
+		-Dforce_posix_threads=true \
+		--default-library=$(if $(BUILD_STATIC),static,shared) \
+		--prefix=$(PREFIX)/$(BUILD)
+		-Dgtk_doc=false
+	cd '$(SOURCE_DIR)' && ninja -C $(BUILD_DIR) install
     $(INSTALL) -m755 '$(BUILD_DIR)/gio/glib-compile-schemas' '$(PREFIX)/$(TARGET)/bin/'
     $(INSTALL) -m755 '$(BUILD_DIR)/gio/glib-compile-resources' '$(PREFIX)/$(TARGET)/bin/'
-    $(INSTALL) -m755 '/usr/bin/glib-genmarshal' '$(PREFIX)/$(TARGET)/bin/'
+    $(INSTALL) -m755 '$(BUILD_DIR)/gobject/glib-genmarshal' '$(PREFIX)/$(TARGET)/bin/'
 endef
 
 define $(PKG)_BUILD_$(BUILD)
@@ -87,3 +69,18 @@ define $(PKG)_BUILD_$(BUILD)
         $($(PKG)_BUILD_NATIVE))
 endef
 
+define $(PKG)_BUILD
+    # other packages expect glib-tools in $(TARGET)/bin
+    rm -f  '$(PREFIX)/$(TARGET)/bin/glib-*'
+    ln -sf '$(PREFIX)/$(BUILD)/bin/glib-genmarshal'        '$(PREFIX)/$(TARGET)/bin/'
+    ln -sf '$(PREFIX)/$(BUILD)/bin/glib-compile-schemas'   '$(PREFIX)/$(TARGET)/bin/'
+    ln -sf '$(PREFIX)/$(BUILD)/bin/glib-compile-resources' '$(PREFIX)/$(TARGET)/bin/'
+
+    # cross build
+	cd '$(SOURCE_DIR)' && $(TARGET)-meson '$(BUILD_DIR)' \
+		-Dforce_posix_threads=true \
+		--default-library=$(if $(BUILD_STATIC),static,shared) \
+		-Dgtk_doc=false \
+		-Diconv=external
+	cd '$(SOURCE_DIR)' && ninja -C $(BUILD_DIR) install
+endef

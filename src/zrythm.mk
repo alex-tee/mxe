@@ -7,7 +7,7 @@ $(PKG)_IGNORE   :=
 $(PKG)_VERSION  := c9b1f16
 $(PKG)_CHECKSUM := 35d6620c533db0e60d173d3b945066e95acd9aef8703efd2d6f695ec3479b3c4
 $(PKG)_GH_CONF  := zrythm/zrythm/branches/master
-$(PKG)_DEPS     := cc libsndfile fftw gtk3 libyaml gtksourceview4 rubberband dlfcn-win32 carla librsvg
+$(PKG)_DEPS     := cc libsndfile fftw gtk3 libyaml gtksourceview4 rubberband dlfcn-win32 carla librsvg zstd
 
 define $(PKG)_BUILD
 	cd '$(SOURCE_DIR)' && \

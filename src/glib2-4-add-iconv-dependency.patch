@@ -1,0 +1,19 @@
+--- glib-2.64.2/meson.build.bak	2020-05-19 13:07:17.116665851 +0100
++++ glib-2.64.2/meson.build	2020-05-19 13:07:47.109999190 +0100
+@@ -1816,12 +1816,12 @@
+ # the built-in implementation
+ iconv_opt = get_option('iconv')
+ if host_system == 'windows'
+-  libiconv = []
++  libiconv = [cc.find_library('iconv')]
+   # We have a #include "win_iconv.c" in gconvert.c on Windows, so we don't need
+   # any external library for it
+-  if iconv_opt != 'auto'
+-    warning('-Diconv was set to @0@, which was ignored')
+-  endif
++  #if iconv_opt != 'auto'
++    #warning('-Diconv was set to @0@, which was ignored')
++  #endif
+ else
+   found_iconv = false
+   if ['auto', 'libc'].contains(iconv_opt) and cc.has_function('iconv_open')

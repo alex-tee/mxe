@@ -9,7 +9,7 @@ $(PKG)_CHECKSUM := 1582595099537ca8ff3b99c6804350b4c058bb8ad67411bbaae024ee7cead
 $(PKG)_SUBDIR   := gdk-pixbuf-$($(PKG)_VERSION)
 $(PKG)_FILE     := gdk-pixbuf-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://download.gnome.org/sources/gdk-pixbuf/$(call SHORT_PKG_VERSION,$(PKG))/$($(PKG)_FILE)
-$(PKG)_DEPS     := cc glib jasper jpeg libiconv libpng tiff librsvg
+$(PKG)_DEPS     := cc glib2 jasper jpeg libiconv libpng tiff librsvg
 
 define $(PKG)_BUILD
 	cd $(SOURCE_DIR) && \
