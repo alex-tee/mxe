@@ -78,6 +78,7 @@ define $(PKG)_BUILD_NATIVE
     $(MAKE) -C '$(BUILD_DIR)/gio'     -j '$(JOBS)' glib-compile-resources
     $(INSTALL) -m755 '$(BUILD_DIR)/gio/glib-compile-schemas' '$(PREFIX)/$(TARGET)/bin/'
     $(INSTALL) -m755 '$(BUILD_DIR)/gio/glib-compile-resources' '$(PREFIX)/$(TARGET)/bin/'
+    $(INSTALL) -m755 '/usr/bin/glib-genmarshal' '$(PREFIX)/$(TARGET)/bin/'
 endef
 
 define $(PKG)_BUILD_$(BUILD)
