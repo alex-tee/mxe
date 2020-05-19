@@ -1,0 +1,11 @@
+--- gdk-pixbuf-2.40.0/gdk-pixbuf/io-gif-animation.c	2020-05-18 18:57:13.030000000 +0100
++++ gdk-pixbuf-2.40.0/gdk-pixbuf/io-gif-animation.c	2020-05-18 18:57:34.306666673 +0100
+@@ -20,6 +20,8 @@
+  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+  */
+
++#include <string.h>
++
+ #include "config.h"
+ #include <errno.h>
+ #include "gdk-pixbuf-transform.h"
