@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 0bd2cc681dfeffdef739cb29913f8c3caa47a88a451fd2bc6e606c0299728
 $(PKG)_SUBDIR   := libepoxy-$($(PKG)_VERSION)
 $(PKG)_FILE     := libepoxy-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := https://github.com/anholt/libepoxy/releases/download/$($(PKG)_VERSION)/libepoxy-$($(PKG)_VERSION).tar.xz
-$(PKG)_DEPS     := cc xorg-macros
+$(PKG)_DEPS     := cc xorg-macros meson-wrapper
 
 define $(PKG)_BUILD
 	cd $(SOURCE_DIR) && \
