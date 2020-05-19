@@ -17,7 +17,7 @@ define $(PKG)_UPDATE
 endef
 
 define $(PKG)_BUILD
-	cd '$(1)' && ./configure \
+	cd '$(1)' && LDFLAGS+='-lgdiplus -lgdi32' ./configure \
 		$(MXE_CONFIGURE_OPTS) \
 		--disable-gtk-doc \
 		--enable-pixbuf-loader \
