@@ -890,6 +890,10 @@ all-filtered: $(REQUIRED_PKGS)
 .PHONY: download
 download: $(addprefix download-,$(REQUIRED_PKGS))
 
+# print the version of a package
+print-ver-%:
+	@echo $($*_VERSION)
+
 # print a list of upstream dependencies and downstream dependents
 show-deps-%:
 	$(if $(call set_is_member,$*,$(PKGS)),\

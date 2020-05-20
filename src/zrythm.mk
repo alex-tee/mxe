@@ -1,13 +1,19 @@
 # This file is part of MXE. See LICENSE.md for licensing information.
 
 PKG             := zrythm
-$(PKG)_WEBSITE  := https://github.com/zrythm/zrythm
+$(PKG)_WEBSITE  := https://www.zrythm.org
 $(PKG)_DESCR    := zrythm
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := c9b1f16
-$(PKG)_CHECKSUM := 35d6620c533db0e60d173d3b945066e95acd9aef8703efd2d6f695ec3479b3c4
-$(PKG)_GH_CONF  := zrythm/zrythm/branches/master
-$(PKG)_DEPS     := cc libsndfile fftw gtk3 libyaml gtksourceview4 rubberband dlfcn-win32 carla librsvg zstd
+$(PKG)_VERSION  := 7483bc7a3003314f2f979665245e1599740b5dec
+$(PKG)_CHECKSUM := 4da068225af2aea3b0de80e81879732ccf93d454c152a078ba40921771fcbfde
+$(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
+$(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
+$(PKG)_URL      := https://git.zrythm.org/cgit/zrythm/snapshot/$(PKG)-$($(PKG)_VERSION).tar.gz
+$(PKG)_DEPS     := cc libsndfile fftw gtk3 libyaml gtksourceview4 rubberband dlfcn-win32 carla librsvg zstd zplugins
+
+# note: this assumes that the meson subprojects are
+# predownloaded in
+# /home/ansible/Documents/git/zrythm/subprojects
 
 define $(PKG)_BUILD
 	cd '$(SOURCE_DIR)' && \

@@ -9,6 +9,10 @@ $(PKG)_CHECKSUM := acca98b2b5717935a9ab0a3ea605f56ee79159a504a34d782fde2ee820b06
 $(PKG)_GH_CONF  := zrythm/ZPlugins/branches/master
 $(PKG)_DEPS     := cc cairo librsvg
 
+# note: this assumes that the meson subprojects are
+# predownloaded in
+# /home/ansible/Documents/git/ZPlugins/subprojects
+
 define $(PKG)_BUILD
 	cd '$(SOURCE_DIR)' && \
 		cp -R /home/ansible/Documents/git/ZPlugins/subprojects/* ./subprojects/
