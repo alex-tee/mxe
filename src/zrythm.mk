@@ -17,6 +17,7 @@ define $(PKG)_BUILD
 		-Drtmidi=auto \
 		-Drtaudio=auto \
 		-Dcarla=enabled \
+		-Dtrial-ver=false \
 		-Dwindows-release=true
 	cd $(SOURCE_DIR) && \
 		$(SED) -i -e '45s|#|//#|' subprojects/lilv/lilv-0.24.6/src/util.c && \
