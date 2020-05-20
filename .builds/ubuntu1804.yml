@@ -21,6 +21,7 @@ packages:
   - libxml-parser-perl
   - lzip
   - make
+  - meson
   - openssl
   - p7zip-full
   - patch
