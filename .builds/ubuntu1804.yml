@@ -40,7 +40,8 @@ secrets:
 tasks:
   - build_64: |
       cd mxe
-      make MXE_TARGETS='x86_64-w64-mingw32.static' JOBS=5 -j5 carla
+      ./bootstrap
+      make MXE_TARGETS='x86_64-w64-mingw32.shared' JOBS=5 -j5 zrythm
   - deploy_64: |
       cd mxe
       # set common vars
@@ -70,7 +71,7 @@ tasks:
       rsync --rsh="$sshopts" -rP carla-64-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
   - build_32: |
       cd mxe
-      make MXE_TARGETS='i686-w64-mingw32.static' JOBS=5 -j5 carla
+      make MXE_TARGETS='i686-w64-mingw32.shared' JOBS=5 -j5 zrythm
   - deploy_32: |
       cd mxe
       # set common vars
