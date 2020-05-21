@@ -1,2 +1,2 @@
 #! /usr/bin/env sh
-make MXE_TARGETS='x86_64-w64-mingw32.shared x86_64-w64-mingw32.static' MXE_PLUGIN_DIRS=plugins/meson-wrapper JOBS=4 -j4 meson-wrapper cc
+make MXE_TARGETS='x86_64-w64-mingw32.shared x86_64-w64-mingw32.static' MXE_PLUGIN_DIRS=plugins/meson-wrapper -j1 meson-wrapper cc
