@@ -15,7 +15,7 @@ $(PKG)_DEPS     := cc cairo librsvg
 
 define $(PKG)_BUILD
 	cd '$(SOURCE_DIR)' && \
-		cp -R /home/ansible/Documents/git/ZPlugins/subprojects/* ./subprojects/
+		cp -R /home/build/zplugins/subprojects/* ./subprojects/
 	cd $(SOURCE_DIR)/ext/Soundpipe && \
 		$(MAKE) CC=$(TARGET)-gcc
 	cd '$(SOURCE_DIR)' && $(TARGET)-meson '$(BUILD_DIR)' --wrap-mode=nodownload \

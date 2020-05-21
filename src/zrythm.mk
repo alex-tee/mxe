@@ -17,7 +17,7 @@ $(PKG)_DEPS     := cc libsndfile fftw gtk3 libyaml gtksourceview4 rubberband dlf
 
 define $(PKG)_BUILD
 	cd '$(SOURCE_DIR)' && \
-		cp -R /home/ansible/Documents/git/zrythm/subprojects/* ./subprojects/
+		cp -R /home/build/zplugins/subprojects/* ./subprojects/
 	cd '$(SOURCE_DIR)' && $(TARGET)-meson '$(BUILD_DIR)' --wrap-mode=nodownload \
 		-Dwith-manpage=false \
 		-Drtmidi=auto \
