@@ -21,7 +21,7 @@ endef
 
 define $(PKG)_BUILD
 	cd '$(SOURCE_DIR)' && \
-		cp -R /home/ansible/Documents/non-git/gtk+-3.24.18/subprojects/* ./subprojects/ && \
+		cp -R /home/build/gtk/subprojects/* ./subprojects/ && \
 		$(SED) -i -e "s/'-lgdi32',/'-lgdi32', '-lgdiplus',/" meson.build && \
 		$(SED) -i -e "1042s/.*/if false/" gtk/meson.build && \
 		$(SED) -i -e "1090s/true/true)/" gtk/meson.build && \
