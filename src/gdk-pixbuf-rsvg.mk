@@ -19,6 +19,7 @@ define $(PKG)_BUILD
 		-Drelocatable=true \
 		-Djasper=true \
 		-Ddocs=false \
+		-Dman=false \
 		-Dgir=false \
 		-Dnative_windows_loaders=true \
 		-Dbuiltin_loaders=windows
