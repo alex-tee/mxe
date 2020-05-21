@@ -26,6 +26,8 @@ define $(PKG)_BUILD
 		$(SED) -i -e "1042s/.*/if false/" gtk/meson.build && \
 		$(SED) -i -e "1090s/true/true)/" gtk/meson.build && \
 		$(SED) -i -e "1091s/)/endif/" gtk/meson.build && \
+		$(SED) -i -e "32s/.*/'''/" build-aux/meson/post-install.py && \
+		$(SED) -i -e "46s/.*/'''/" build-aux/meson/post-install.py && \
 		$(SED) -i -e \
 		"s/DllMain/$(if $(BUILD_STATIC),gtk_DllMain,DllMain)/g" \
 		gtk/gtkwin32.c && \
