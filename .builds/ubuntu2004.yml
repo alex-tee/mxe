@@ -42,7 +42,7 @@ tasks:
   - build_64: |
       cd mxe
       ./bootstrap
-      make MXE_TARGETS='x86_64-w64-mingw32.shared' MXE_PLUGIN_DIRS=plugins/meson-wrapper JOBS=5 -j5 zrythm
+      make MXE_TARGETS='x86_64-w64-mingw32.shared' MXE_PLUGIN_DIRS=plugins/meson-wrapper JOBS=5 -j5 carla
   - deploy_64: |
       cd mxe
       # set common vars
@@ -72,7 +72,7 @@ tasks:
       rsync --rsh="$sshopts" -rP carla-64-$carla_commit.zip srht@mail.zrythm.org:/var/www/zrythm/downloads/carla/
   - build_32: |
       cd mxe
-      make MXE_TARGETS='i686-w64-mingw32.shared' MXE_PLUGIN_DIRS=plugins/meson-wrapper JOBS=5 -j5 zrythm
+      make MXE_TARGETS='i686-w64-mingw32.shared' MXE_PLUGIN_DIRS=plugins/meson-wrapper JOBS=5 -j5 carla
   - deploy_32: |
       cd mxe
       # set common vars
