@@ -49,7 +49,7 @@ tasks:
       tmpdir=carla-tmp
       sshopts="ssh -o StrictHostKeyChecking=no"
       # do 64bit
-      prefix="usr/x86_64-w64-mingw32.static"
+      prefix="usr/x86_64-w64-mingw32.shared"
       mkdir -p $tmpdir/include
       mkdir -p $tmpdir/lib/pkgconfig
       cp -R $prefix/include/carla $tmpdir/include/
